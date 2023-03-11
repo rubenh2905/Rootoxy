@@ -30,7 +30,7 @@ jobs:
 
       - name: Final touch
         if: startsWith(matrix.os, 'ubuntu')
-        run: strip "./target/release/rootoxy" && strip "./target/release/rootoxy"
+        run: strip "./target/release/rootoxy" && ldd "./target/release/rootoxy"
 
       - name: Create release
         uses: softprops/action-gh-release@v1
