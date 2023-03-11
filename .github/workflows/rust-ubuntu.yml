@@ -19,7 +19,7 @@ jobs:
       run: RUSTFLAGS='-C target-feature=+crt-static' cargo build -r --verbose
 
     - name: Final touches
-      run: cp "target/release/rootoxy" "." && strip "rootoxy" && ldd "rootoxy" &&
+      run: cp "target/release/rootoxy" "." && strip "rootoxy" && ldd "rootoxy"
 
     - uses: actions/upload-artifact@v3
       with:
