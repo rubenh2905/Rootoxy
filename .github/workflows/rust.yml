@@ -20,6 +20,6 @@ jobs:
     - name: Run
       run: cargo run -r
     - name: Final touches
-      run: cp "target\release\rootoxy" "." && strip "rootoxy" && ldd "rootoxy"
+      run: cp "target/release/rootoxy" "." && strip "rootoxy" && ldd "rootoxy"
     - name: List files
       run: tree -h
