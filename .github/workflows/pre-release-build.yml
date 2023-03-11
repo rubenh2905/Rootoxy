@@ -22,18 +22,6 @@ jobs:
           
       - name: Build executable
         run: cargo build --release
-      
-      - name: Install choco
-        if: startsWith(matrix.os, 'windows')
-        run: Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-      
-      - name: Install binutils
-        if: startsWith(matrix.os, 'windows')
-        run: choco install -y binutils
-      
-      - name: Create release
-        if: startsWith(matrix.os, 'windows')
-        run: strip "./target/release/rootoxy.exe"
         
       - name: Final touch
         if: startsWith(matrix.os, 'ubuntu')
