@@ -14,19 +14,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Set up Rust
         uses: ATiltedTree/setup-rust@v1
         with:
           rust-version: ${{ matrix.rust-version }}
-          
+
       - name: Build executable
         run: cargo build --release
-        
+
       - name: Final touch
         if: startsWith(matrix.os, 'ubuntu')
         run: strip "./target/release/rootoxy"
-        
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(matrix.os, 'windows')
@@ -34,9 +34,10 @@ jobs:
           files: |
             ./target/release/rootoxy.exe
           tag_name: v${{ github.run_number }}
-          title: Release v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
           body: |
             Release of version v${{ github.run_number }}
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(matrix.os, 'ubuntu')
