@@ -3,23 +3,40 @@ name: Rust-ubuntu
 on:
   workflow_dispatch:
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   build:
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Set up Rust
+      uses: ATiltedTree/setup-rust@v1
+      with:
+        rust-version: stable
+
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: RUSTFLAGS='-C target-feature=+crt-static' cargo build -r --verbose
+
+    - name: Final touches
+      run: cp "target/release/rootoxy" "." && strip "rootoxy" && ldd "rootoxy" &&
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifact-ubuntu
+        path: rootoxy
+
+  pre-release:
     runs-on: ubuntu-latest
 
     steps:
     - name: Setup
-      run: sudo apt update && sudo apt install tree && rustup update
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build -r --verbose
-    - name: Run
-      run: cargo run -r
-    - name: Final touches
-      run: cp "target/release/rootoxy" "." && strip "rootoxy" && ldd "rootoxy"
-    - name: List files
+      run: sudo apt update -y && sudo apt install -y tree
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifact-ubuntu
+        path: ubuntu/stable
+
+    - name: Print results
       run: tree -h
