@@ -24,7 +24,7 @@ jobs:
         run: strip "./target/release/rootoxy"
       - name: Create release
         uses: softprops/action-gh-release@v1
-        if: startsWith(matrix.os, "windows")
+        if: startsWith(matrix.os, 'windows')
         with:
           files: |
             ./target/release/rootoxy.exe
@@ -34,7 +34,7 @@ jobs:
             Release of version v${{ github.run_number }}
       - name: Create release
         uses: softprops/action-gh-release@v1
-        if: startsWith(matrix.os, "ubuntu")
+        if: startsWith(matrix.os, 'ubuntu')
         with:
           files: |
             ./target/release/rootoxy
