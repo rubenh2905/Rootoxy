@@ -14,14 +14,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
       - name: Set up Rust
         uses: ATiltedTree/setup-rust@v1
         with:
           rust-version: ${{ matrix.rust-version }}
+          
       - name: Build executable
         run: cargo build --release
+      
+      - name: Install choco
+        if: startsWith(matrix.os, 'windows')
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+      
+      - name: Install binutils
+        if: startsWith(matrix.os, 'windows')
+        run: choco install -y binutils
+      
+      - name: Create release
+        if: startsWith(matrix.os, 'windows')
+        run: strip "./target/release/rootoxy.exe"
+        
       - name: Final touch
+        if: startsWith(matrix.os, 'ubuntu')
         run: strip "./target/release/rootoxy"
+        
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(matrix.os, 'windows')
