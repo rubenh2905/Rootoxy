@@ -24,8 +24,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./target/release/rootoxy.exe
-            ./target/release/rootoxy
+            ./target/release/rootoxy${{ matrix.os == 'windows-latest' && '.exe' }}
           tag_name: v${{ github.run_number }}
           title: Release v${{ github.run_number }}
           body: |
