@@ -20,4 +20,4 @@ jobs:
     - name: Run
       run: cargo run
     - name: List files
-      run: tree
+      run: tree -h
