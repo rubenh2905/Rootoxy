@@ -13,11 +13,13 @@ jobs:
 
     steps:
     - name: Setup
-      run: sudo apt update && sudo apt install tree
+      run: sudo apt update && sudo apt install tree && rustup update
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build -r --verbose
     - name: Run
       run: cargo run -r
+    - name: Final touches
+      run: cp "target\release\rootoxy" "." && strip "rootoxy" && ldd "rootoxy"
     - name: List files
       run: tree -h
