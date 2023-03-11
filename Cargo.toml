@@ -1,0 +1,10 @@
+[package]
+name = "Rootoxy"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "rootoxy"
+path = "src/main.rs"
+
+[dependencies]
