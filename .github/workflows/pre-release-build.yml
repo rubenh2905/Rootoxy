@@ -42,3 +42,4 @@ jobs:
           name: Release v${{ github.run_number }}
           body: |
             Release of version v${{ github.run_number }}
+
