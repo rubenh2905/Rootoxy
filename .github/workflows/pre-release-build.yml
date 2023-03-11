@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        rust-version: [1.68.0]
+        rust-version: [stable]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
