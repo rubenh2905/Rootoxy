@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set up Rust
-        uses: actions/setup-rust@v1
+        uses: ATiltedTree/setup-rust@v1
         with:
           rust-version: ${{ matrix.rust-version }}
       - name: Build executable
