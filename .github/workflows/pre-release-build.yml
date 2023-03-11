@@ -1,0 +1,32 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        rust-version: [1.68.0]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: ${{ matrix.rust-version }}
+      - name: Build executable
+        run: cargo build --release
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./target/release/rootoxy.exe
+            ./target/release/rootoxy
+          tag_name: v${{ github.run_number }}
+          title: Release v${{ github.run_number }}
+          body: |
+            Release of version v${{ github.run_number }}
