@@ -16,8 +16,8 @@ jobs:
       run: sudo apt update && sudo apt install tree
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build -r --verbose
     - name: Run
-      run: cargo run
+      run: cargo run -r
     - name: List files
       run: tree -h
