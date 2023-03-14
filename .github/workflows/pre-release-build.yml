@@ -5,7 +5,7 @@ on:
     
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -32,26 +32,46 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: strip "./target/release/rootoxy" && ldd "./target/release/rootoxy"
 
-      - name: Create release
-        uses: softprops/action-gh-release@v1
+      - name: Artifact ${{ matrix.os }}-${{ matrix.rust-version }}
+        uses: actions/upload-artifact@v3
         if: startsWith(matrix.os, 'windows')
         with:
-          files: |
+          name: artifact-${{ matrix.os }}-${{ matrix.rust-version }}
+          path: |
             ./target/release/rootoxy.exe
-          tag_name: v${{ github.run_number }}
-          name: Release v${{ github.run_number }}
-          body: |
-            Release of version v${{ github.run_number }}
 
-      - name: Create release
-        uses: softprops/action-gh-release@v1
+      - name: Artifact ${{ matrix.os }}-${{ matrix.rust-version }}
+        uses: actions/upload-artifact@v3
         if: startsWith(matrix.os, 'ubuntu')
         with:
-          files: |
+          name: artifact-${{ matrix.os }}-${{ matrix.rust-version }}
+          path: |
             ./target/release/rootoxy
+
+  pre-release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download ubuntu-latest-stable
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact-ubuntu-latest-stable
+          path: ubuntu/stable
+      
+      - name: Download windows-latest-stable
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact-windows-latest-stable
+          path: windows/stable
+          
+      - name: Publish pre-release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./ubuntu/stable/rootoxy
+            ./windows/stable/rootoxy.exe
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}
           body: |
             Release of version v${{ github.run_number }}
           prerelease: true
-
